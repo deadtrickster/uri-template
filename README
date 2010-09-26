@@ -1,0 +1,22 @@
+uri-template is an implementation of the URI Template proposed
+standard draft version 01
+(http://tools.ietf.org/html/draft-gregorio-uritemplate-01) as a reader
+macro, used for both template interpolation and URI destructuring.
+
+Although uri-template does not implement the operators introduced in
+the 02 and later drafts of the URI Template standard, it does allow
+arbitrary Lisp expressions in template placeholders, which gives
+simpler and more powerful templates.
+
+For more information about uri-template, see the project homepage:
+http://common-lisp.net/project/uri-template/
+
+The uri-template mailing list is uri-template-devel@common-lisp.net.
+Any questions, bug reports and patches are welcome. You can subscribe
+by visiting:
+http://common-lisp.net/cgi-bin/mailman/listinfo/uri-template-devel
+
+The author, Vladimir Sedach, can be contacted at vsedach@gmail.com.
+
+For license and copyright information (BSD), see the file COPYING
+included with the distribution.
