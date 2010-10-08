@@ -21,11 +21,7 @@
       (loop until (member (setf next-char (read-char stream nil #\Space recursive-p)) '(#\Space #\Newline #\Tab #\)))
             do (if (char= #\{ next-char)
                    (progn (collect-string)
-                          (push `(maybe-uri-encode
-                                  (progn ,@(loop until (char= #\} (peek-char t stream))
-                                                 collect (read stream t nil recursive-p)
-                                                 finally (read-char stream nil))))
-                                template-accumulator))
+                          (push `(maybe-uri-encode (progn ,@(read-delimited-list #\} stream))) template-accumulator))
                    (push next-char string-accumulator))
             finally (unread-char next-char stream) (collect-string))
       (reverse template-accumulator))))
