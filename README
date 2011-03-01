@@ -8,6 +8,59 @@ the 02 and later drafts of the URI Template standard, it does allow
 arbitrary Lisp expressions in template placeholders, which gives
 simpler and more powerful templates.
 
+Example use:
+
+Template interpolation:
+
+(let ((foo 1))
+  #Uhttp://www.example.com/widget/{foo}/parts)
+
+=> "http://www.example.com/widget/1/parts"
+
+
+Template destructuring:
+
+(uri-template-bind (#Uhttp://www.example.com/{part}/{number})
+    "http://www.example.com/widget/1"
+  (list part (parse-integer number) %uri-host))
+
+=> ("widget" 1 "www.example.com")
+
+
+Template desctructuring also binds several handy standard components
+to anaphoric variables:
+
+(uri-template-bind (#U{uri})
+    "http://user@www.foo.com:8080/dir/abc?bar=baz&xyz=1#hash"
+  (list %uri-scheme %uri-authority %uri-user %uri-host %uri-port
+  %uri-path %uri-directory %uri-file %uri-query %uri-fragment
+  %uri-head %uri-tail))
+
+=> ("http"
+    "user@www.foo.com:8080"
+    "user"
+    "www.foo.com"
+    "8080"
+    "/dir/abc"
+    "/dir/"
+    "abc"
+    "bar=baz&xyz=1"
+    "hash"
+    "http://user@www.foo.com:8080"
+    "/dir/abc?bar=baz&xyz=1#hash")
+
+
+uri-templates can be enabled by calling enable-uri-template-syntax, or
+by merging or using the uri-template:uri-template readtable via the
+named-readtables library (http://common-lisp.net/project/named-readtables/).
+
+uri-template works with Parenscript to provide template interpolation
+for JavaScript. To enable this functionality, load Parenscript before
+compiling uri-template (you might need to re-compile if you have
+previously loaded uri-template without first loading
+Parenscript). Note that destructuring is currently unsupported for
+Parenscript.
+
 For more information about uri-template, see the project homepage:
 http://common-lisp.net/project/uri-template/
 
@@ -18,5 +71,6 @@ http://common-lisp.net/cgi-bin/mailman/listinfo/uri-template-devel
 
 The author, Vladimir Sedach, can be contacted at vsedach@gmail.com.
 
-For license and copyright information (BSD), see the file COPYING
-included with the distribution.
+The code is licensed under the LLGPL (see the file COPYING included
+with the distribution for details), except for the unit tests, which
+are in the public domain.

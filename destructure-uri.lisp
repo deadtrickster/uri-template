@@ -1,8 +1,11 @@
 (in-package #:uri-template)
 
-(defvar uri-decode? t)
+(defvar uri-decode? t
+  "Controls whether URI decoding/unescaping is done on the templated value when destructuring.
+True by default.")
 
 (defun uri-decode (str)
+  "Decodes URI encoded/escaped characters in the given string."
   (regex-replace-all "%[\\d|a-f|A-F]{2}" str (lambda (match) (string (code-char (parse-integer match :start 1 :radix 16)))) :simple-calls t))
 
 (defmacro weak-register-groups-bind (vars regex str &body body)
@@ -15,10 +18,25 @@
 
 (defmacro uri-template-bind ((template) uri &body body)
   "Binds URI template placeholders (which must be symbols) in given
-URI, as well as attempting to bind a set of standard uri
-components (anaphoric variables %uri-protocol, %uri-host, etc.) to
-their respective parts of the given URI. Body executes only if all URI
-template placeholders can be bound."
+URI, as well as attempting to bind a set of standard URI components to
+their respective parts of the given URI. Body executes only if all
+explicitly specified URI template placeholders can be bound.
+
+Given the example URI http://user@www.foo.com:8080/dir/abc?bar=baz&xyz=1#hash
+The standard URI components look like:
+
+%uri-scheme     http
+%uri-authority  user@www.foo.com:8080
+%uri-user       user
+%uri-host       www.foo.com
+%uri-port       8080
+%uri-path       /dir/abc
+%uri-directory  /dir/
+%uri-file       abc
+%uri-query      bar=baz&xyz=1
+%uri-fragment   hash
+%uri-head       http://user@www.foo.com:8080
+%uri-tail       /dir/abc?bar=baz&xyz=1#hash"
   (let* ((template (cdr template)) ;; template is expected to look like output of #U: '(uri-template &rest args)
          (template-vars (mapcar (lambda (x) (car (last (second x)))) (remove-if #'stringp template)))
          (uri-var (gensym)))

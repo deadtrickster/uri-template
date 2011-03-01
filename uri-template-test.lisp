@@ -1,3 +1,8 @@
+;; Copying and distribution of this file, with or without
+;; modification, are permitted in any medium without royalty provided
+;; this notice is preserved. This file is offered as-is, without any
+;; warranty.
+
 (in-package #:uri-template.test)
 (in-readtable uri-template.test)
 
@@ -35,9 +40,13 @@
                    (list %uri-scheme %uri-authority %uri-path %uri-directory %uri-file %uri-query %uri-fragment))
                  '("http" "files3.dsv.data.cod.ru" "/" "/" nil "WyIyNWQ3NWU5NTRmZDU1MWIzYmQ5NzVjNzJhZjRkZmNhZSIsMTI1MTA5NjMxNCwiXHUwNDEwXHUwNDNiXHUwNDRjXHUwNDRmXHUwNDNkXHUwNDQxIFx1MDQ0MVx1MDQzNVx1MDQ0MFx1MDQzZVx1MDQzYVx1MDQ0MFx1MDQ0Ylx1MDQzYlx1MDQ0Ylx1MDQ0NS5yYXIiLCJrTzNqSUo3bUN5WlBPenlBVGdcL0M3UkZVWHdXYkN6SWtEYzUweTl5a1lOVCtTRmlwVFdsN1UxWlVybGVLNjMyaGlYc0hvVDhGZitGWUt6eGVVRGxOVkxUN3R0MndLYjg4VGFjYmZSVnhrZjNYQXdZalpYemVEQXM4bmxzK0RCbnZEcnZQTmRMKytDS05pNjVJXC8yb2JnY0N1RmdyK1lpS0VSak8rNVZSeTIrcz0iXQ==" nil)))
   (assert (equal (uri-template-bind (#U{uri})
-                     "http://www.foo.com/abc?bar=baz&xyz=1"
+                     "http://www.foo.com/abc?bar=baz&xyz=1#hash"
                    (list %uri-scheme %uri-host %uri-path %uri-directory %uri-file %uri-query %uri-fragment %uri-head %uri-tail))
-                 '("http" "www.foo.com" "/abc" "/" "abc" "bar=baz&xyz=1" nil "http://www.foo.com" "/abc?bar=baz&xyz=1")))
+                 '("http" "www.foo.com" "/abc" "/" "abc" "bar=baz&xyz=1" "hash" "http://www.foo.com" "/abc?bar=baz&xyz=1#hash")))
+  (assert (equal (uri-template-bind (#U{uri})
+                     "http://user@www.foo.com:8080/dir/abc?bar=baz&xyz=1#hash"
+                   (list %uri-scheme %uri-authority %uri-user %uri-host %uri-port %uri-path %uri-directory %uri-file %uri-query %uri-fragment %uri-head %uri-tail))
+                 '("http" "user@www.foo.com:8080" "user" "www.foo.com" "8080" "/dir/abc" "/dir/" "abc" "bar=baz&xyz=1" "hash" "http://user@www.foo.com:8080" "/dir/abc?bar=baz&xyz=1#hash")))
   (assert (equal (uri-template-bind (#U{uri})
                      "http://www.foo.com/?bar=baz&xyz=1"
                    (list %uri-scheme %uri-host %uri-path %uri-directory %uri-file %uri-query %uri-fragment))

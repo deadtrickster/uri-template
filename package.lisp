@@ -10,10 +10,12 @@
    #:enable-uri-template-syntax
    #:read-uri-template
    #:uri-encode?
+   #:uri-encode
 
    ;; destructuring
    #:uri-template-bind
    #:uri-decode?
+   #:uri-decode
 
    ;; RFC 2396 standard URI components
    #:%uri-scheme
