@@ -32,28 +32,60 @@ to anaphoric variables:
 
 (uri-template-bind (#U{uri})
     "http://user@www.foo.com:8080/dir/abc?bar=baz&xyz=1#hash"
-  (list %uri-scheme %uri-authority %uri-user %uri-host %uri-port
-  %uri-path %uri-directory %uri-file %uri-query %uri-fragment
-  %uri-head %uri-tail))
-
-=> ("http"
-    "user@www.foo.com:8080"
-    "user"
-    "www.foo.com"
-    "8080"
-    "/dir/abc"
-    "/dir/"
-    "abc"
-    "bar=baz&xyz=1"
-    "hash"
-    "http://user@www.foo.com:8080"
-    "/dir/abc?bar=baz&xyz=1#hash")
+  (list %uri-scheme          =>     ("http"
+        %uri-authority               "user@www.foo.com:8080"
+        %uri-user                    "user"
+        %uri-host                    "www.foo.com"
+        %uri-port                    "8080"
+        %uri-path                    "/dir/abc"
+        %uri-directory               "/dir/"
+        %uri-file                    "abc"
+        %uri-query                   "bar=baz&xyz=1"
+        %uri-fragment                "hash"
+        %uri-head                    "http://user@www.foo.com:8080"
+        %uri-tail))                  "/dir/abc?bar=baz&xyz=1#hash")
 
 More examples can be found in the uri-template-test.lisp file.
 
 uri-templates can be enabled by calling enable-uri-template-syntax, or
 by merging or using the uri-template:uri-template readtable via the
-named-readtables library (http://common-lisp.net/project/named-readtables/).
+named-readtables library
+(http://common-lisp.net/project/named-readtables/)
+
+Function reference:
+
+enable-uri-template-syntax (function)
+  Binds the #U dispatch character to read a URI template.
+
+read-uri-template (function)
+  A function suitable for inserting into the readtable so you can
+  read URI templates from your own dispatch character.
+
+uri-decode? (special variable)
+  Controls whether URI decoding/unescaping is done on the templated
+  value when destructuring. True by default.
+
+uri-encode? (special variable)
+  Controls whether URI encoding/escaping is done on the templated value.
+  True by default.
+
+uri-decode (function)
+  Decodes URI encoded/escaped characters in the given string.
+
+uri-encode (function)
+  URI encodes/escapes the given string.
+
+uri-template (symbol)
+  The car of the list that the URI template reader produces. A
+  function or macro.
+  This symbol also names the named-readtables readtable that provides
+  the #U dispatch macro.
+
+uri-template-bind (macro)
+  Binds URI template placeholders (which must be symbols) in given
+  URI, as well as attempting to bind a set of standard URI components to
+  their respective parts of the given URI. Body executes only if all
+  explicitly specified URI template placeholders can be bound.
 
 uri-template works with Parenscript to provide template interpolation
 for JavaScript. To enable this functionality, load Parenscript before
