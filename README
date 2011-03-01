@@ -1,7 +1,7 @@
 uri-template is an implementation of the URI Template proposed
 standard draft version 01
 (http://tools.ietf.org/html/draft-gregorio-uritemplate-01) as a reader
-macro, used for both template interpolation and URI destructuring.
+macro, used for both creating and parsing URIs.
 
 Although uri-template does not implement the operators introduced in
 the 02 and later drafts of the URI Template standard, it does allow
@@ -49,6 +49,7 @@ to anaphoric variables:
     "http://user@www.foo.com:8080"
     "/dir/abc?bar=baz&xyz=1#hash")
 
+More examples can be found in the uri-template-test.lisp file.
 
 uri-templates can be enabled by calling enable-uri-template-syntax, or
 by merging or using the uri-template:uri-template readtable via the
