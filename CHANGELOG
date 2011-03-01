@@ -1,3 +1,10 @@
+1.0:
+----
+* Changed license to LLGPLv3
+* Added documentation
+* Exported uri-encode and uri-decode functions
+* Moved test asdf system to its own asd file
+
 0.9:
 ----
 * Renamed *encode-uri-string* to uri-encode? (INCOMPATIBLE CHANGE)
