@@ -8,5 +8,7 @@ Lets you easily create and parse URIs by using the URI Template reader macro syn
   :serial t
   :components ((:file "package")
                (:file "uri-template")
-               (:file "destructure-uri"))
+               (:file "destructure-uri")
+               #+parenscript (:file "parenscript-implementation")
+               )
   :depends-on (:cl-ppcre :named-readtables))

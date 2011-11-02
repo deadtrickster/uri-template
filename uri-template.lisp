@@ -34,9 +34,6 @@ read URI templates from your own dispatch character."
 (defmacro maybe-uri-encode (x)
   (if uri-encode? `(uri-encode (princ-to-string ,x)) x))
 
-#+parenscript (parenscript:defpsmacro maybe-uri-encode (x)
-                (if uri-encode? `(encode-u-r-i-component ,x) x))
-
 (defun uri-template (&rest template-args)
   "The car of the list that the URI template reader produces. A
 function or macro.
@@ -44,9 +41,6 @@ function or macro.
 This symbol also names the named-readtables readtable that provides
 the #U dispatch macro."
   (format nil "~{~A~}" template-args))
-
-#+parenscript (parenscript:defpsmacro uri-template (&rest template-args)
-                `(+ ,@template-args))
 
 (defun uri-template-reader (stream subchar arg)
   (declare (ignore subchar arg))
