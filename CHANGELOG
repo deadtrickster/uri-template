@@ -1,3 +1,7 @@
+1.1:
+----
+* Fixed conditional compilation for Parenscript-specific code
+
 1.0:
 ----
 * Changed license to LLGPLv3
