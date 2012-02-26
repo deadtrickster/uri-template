@@ -1,3 +1,7 @@
+1.2:
+----
+* Made uri-encode/decode treat unicode properly
+
 1.1:
 ----
 * Fixed conditional compilation for Parenscript-specific code
