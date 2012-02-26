@@ -4,6 +4,7 @@
   :description "An implementation of the URI Template proposed standard draft version 01."
   :long-description "An implementation of the URI Template proposed standard draft version 01.
 Lets you easily create and parse URIs by using the URI Template reader macro syntax."
+  :author "Vladimir Sedach <vsedach@gmail.com>"
   :license "LLGPLv3"
   :serial t
   :components ((:file "package")
@@ -11,4 +12,4 @@ Lets you easily create and parse URIs by using the URI Template reader macro syn
                (:file "destructure-uri")
                #+parenscript (:file "parenscript-implementation")
                )
-  :depends-on (:cl-ppcre :named-readtables))
+  :depends-on (:cl-ppcre :named-readtables :flexi-streams))

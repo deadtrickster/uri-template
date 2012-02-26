@@ -8,7 +8,8 @@
 
 (defun run-tests ()
   (run-interpolation-tests)
-  (run-destructuring-tests))
+  (run-destructuring-tests)
+  (run-encoding-tests))
 
 (defun run-interpolation-tests ()
   (let ((baz 1)
@@ -20,7 +21,7 @@
     (assert (string= #Uhttp://www.foo.com/bar/{bar}{baz}
                      "http://www.foo.com/bar/bar1"))
     (assert (string= #Uhttp://www.foo.com/bar?foo={"^BAZ !bar"}
-                     "http://www.foo.com/bar?foo=^BAZ%20%21bar"))))
+                     "http://www.foo.com/bar?foo=%5EBAZ%20!bar"))))
 
 (defun run-destructuring-tests ()
   (assert (equal (uri-template-bind (#Uhttp://www.factory.com/orders/{part}/{number})
@@ -61,3 +62,11 @@
                          %uri-authority (list %uri-user %uri-host %uri-port)
                          %uri-path (list %uri-directory %uri-file) %uri-query %uri-fragment))
                  '(NIL "/foo/bar" NIL NIL (NIL NIL NIL) "/foo/bar" ("/foo/" "bar") NIL NIL))))
+
+(defun run-encoding-tests ()
+  (assert (string= "abc123" (uri-encode "abc123")))
+  (assert (string= "abc%20123" (uri-encode "abc 123")))
+  (assert (string= "%D1%84%D0%BE%D0%BE" (uri-encode "фоо")))
+  (assert (string= "abc123" (uri-decode "abc123")))
+  (assert (string= "abc 123" (uri-decode "abc%20123")))
+  (assert (string= "бар" (uri-decode "%D0%B1%D0%B0%D1%80"))))

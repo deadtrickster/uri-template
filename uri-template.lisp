@@ -4,29 +4,40 @@
   "Controls whether URI encoding/escaping is done on the templated value.
 True by default.")
 
+;;; stolen from hunchentoot
 (defun uri-encode (str)
   "URI encodes/escapes the given string."
-  (regex-replace-all '(:alternation #\Space #\! #\* #\' #\( #\) #\; #\: #\@ #\& #\= #\+ #\$ #\, #\/ #\? #\# #\[ #\])
-                     str
-                     (lambda (match) (format nil "%~16R" (char-code (elt match 0))))
-                     :simple-calls t))
+  (with-output-to-string (s)
+    (loop for c across (flexi-streams:string-to-octets str :external-format :utf-8)
+       do (if (or (<= 48 c 57)
+                  (<= 65 c 90)
+                  (<= 97 c 122)
+                  (find c '(36 45 95 46 33 42 39 40 41)))
+              (write-char (code-char c) s)
+              (format s "%~2,'0x" c)))))
 
 (defun read-uri-template (stream &optional recursive-p)
   "A function suitable for inserting into the readtable so you can
 read URI templates from your own dispatch character."
   (let ((*readtable* (copy-readtable))
         (template-accumulator ())
-        (string-accumulator #1=(make-array 10 :element-type 'character :adjustable t :fill-pointer 0))
+        (string-accumulator #1=(make-array 10
+                                           :element-type 'character
+                                           :adjustable t :fill-pointer 0))
         (next-char))
     (set-syntax-from-char #\} #\))
     (flet ((collect-string ()
              (when (< 0 (length string-accumulator))
                (push string-accumulator template-accumulator)
                (setf string-accumulator #1#))))
-      (loop until (member (setf next-char (read-char stream nil #\Space recursive-p)) '(#\Space #\Newline #\Tab #\)))
+      (loop until (member
+                   (setf next-char (read-char stream nil #\Space recursive-p))
+                   '(#\Space #\Newline #\Tab #\)))
             do (if (char= #\{ next-char)
                    (progn (collect-string)
-                          (push `(maybe-uri-encode (progn ,@(read-delimited-list #\} stream))) template-accumulator))
+                          (push `(maybe-uri-encode
+                                  (progn ,@(read-delimited-list #\} stream))
+                                  ) template-accumulator))
                    (vector-push-extend next-char string-accumulator))
             finally (unread-char next-char stream) (collect-string))
       (reverse template-accumulator))))

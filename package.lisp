@@ -37,4 +37,6 @@
 
 (defreadtable uri-template
   (:merge :standard)
-  (:dispatch-macro-char #\# #\U (lambda (&rest args) (apply #'uri-template-reader args))))
+  (:dispatch-macro-char #\# #\U
+                        (lambda (&rest args)
+                          (apply #'uri-template-reader args))))
