@@ -1,7 +1,7 @@
 (in-package #:cl)
 
 (defpackage #:uri-template.test
-  (:use #:cl #:uri-template #:named-readtables)
+  (:use #:cl #:uri-template #:named-readtables #:eos)
   (:export #:run-tests))
 
 (in-package #:uri-template.test)
