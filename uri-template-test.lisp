@@ -21,7 +21,7 @@
     (assert (string= #Uhttp://www.foo.com/bar/{bar}{baz}
                      "http://www.foo.com/bar/bar1"))
     (assert (string= #Uhttp://www.foo.com/bar?foo={"^BAZ !bar"}
-                     "http://www.foo.com/bar?foo=%5EBAZ%20!bar"))))
+                     "http://www.foo.com/bar?foo=%5EBAZ%20%21bar"))))
 
 (defun run-destructuring-tests ()
   (assert (equal (uri-template-bind (#Uhttp://www.factory.com/orders/{part}/{number})

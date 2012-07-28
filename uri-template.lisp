@@ -12,7 +12,7 @@ True by default.")
        do (if (or (<= 48 c 57)
                   (<= 65 c 90)
                   (<= 97 c 122)
-                  (find c '(36 45 95 46 33 42 39 40 41)))
+                  (find c '(45 95 46 126)))
               (write-char (code-char c) s)
               (format s "%~2,'0x" c)))))
 
