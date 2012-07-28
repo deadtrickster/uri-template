@@ -1,3 +1,7 @@
+1.3:
+----
+* Changed list of unreserved characters for URI encoding to conform to RFC 3986
+
 1.2:
 ----
 * Made uri-encode/decode treat unicode properly
